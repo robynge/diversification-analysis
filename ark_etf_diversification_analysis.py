@@ -686,6 +686,64 @@ def plot_etf_comparison(etf_results, period_name, output_path: Path):
     print(f"Saved: {output_path}")
 
 
+def plot_etf_volatility_comparison(etf_results, period_name, output_path: Path):
+    """Plot annualized volatility comparison of all ETFs for a given time period."""
+    apply_publication_style(12, 2.0)
+    n_etfs = len(etf_results)
+    ncols = min(3, n_etfs)
+    nrows = (n_etfs + ncols - 1) // ncols
+
+    fig, axes = plt.subplots(nrows, ncols, figsize=(5*ncols, 4*nrows))
+    axes = np.atleast_1d(axes).flatten()
+
+    for idx, (etf_name, data) in enumerate(etf_results.items()):
+        ax = axes[idx]
+        color = ETF_COLORS.get(etf_name, PALETTE["blue_main"])
+        color_secondary = ETF_COLORS_SECONDARY.get(etf_name, PALETTE["blue_secondary"])
+        sys_risk = data['systematic_risk']
+
+        # std_dev is already annualized
+        stats = data['results'].groupby('portfolio_size')['std_dev'].agg(
+            ['mean', 'std', 'min', 'max', 'count']
+        ).reset_index()
+
+        X = stats['portfolio_size'].values
+        Y = stats['mean'].values * 100  # Convert to percentage
+        Ystd = stats['std'].values * 100
+        n_runs = stats['count'].iloc[0]
+        ci_u = Y + 1.96 * Ystd / np.sqrt(n_runs)
+        ci_l = Y - 1.96 * Ystd / np.sqrt(n_runs)
+        Y_min = stats['min'].values * 100
+        Y_max = stats['max'].values * 100
+
+        ax.fill_between(X, Y_min, Y_max, color=color_secondary, alpha=0.15)
+        ax.fill_between(X, ci_l, ci_u, color=color_secondary, alpha=0.35)
+        ax.plot(X, Y, color=color, linewidth=2, marker='o', markersize=4,
+                markerfacecolor='white', markeredgecolor=color, markeredgewidth=1)
+
+        # Systematic risk line
+        sys_risk_pct = sys_risk * 100
+        ax.axhline(y=sys_risk_pct, color=PALETTE["red_strong"], linewidth=1.2)
+
+        ax.set_xlabel('Portfolio size')
+        ax.set_ylabel('Annualized Volatility (%)' if idx % ncols == 0 else '')
+        ax.set_title(f'{etf_name}', loc='left', fontweight='bold')
+        ax.text(0.95, 0.05, f'Sys={sys_risk_pct:.1f}%', transform=ax.transAxes, ha='right', va='bottom', fontsize=9)
+
+        ax.set_xlim(0, X.max() + 2)
+        y_range = Y_max.max() - Y_min.min()
+        ax.set_ylim(max(0, Y_min.min() - y_range * 0.1), Y_max.max() + y_range * 0.1)
+
+    for idx in range(len(etf_results), len(axes)):
+        axes[idx].set_visible(False)
+
+    fig.suptitle(f'Annualized Volatility - {period_name}', fontsize=14, fontweight='bold', y=1.02)
+    fig.tight_layout(pad=2)
+    fig.savefig(output_path, dpi=600, facecolor='white', bbox_inches='tight')
+    plt.close(fig)
+    print(f"Saved: {output_path}")
+
+
 # ============================================================================
 # Main Execution (EXACTLY follows notebook cell-18)
 # ============================================================================
@@ -974,6 +1032,23 @@ def main():
                         etf_results_for_weight,
                         f"{period_name} ({weight_label})",
                         output_comparison / f"comparison_{safe_period}_{weight_key}.png"
+                    )
+
+    # Volatility comparison plots - for each weight type
+    print("\n>>> Volatility Comparison Plots:")
+    for weight_key, weight_label in weight_types:
+        for period_name, etf_results in all_results.items():
+            if etf_results:
+                safe_period = period_name.lower().replace(' ', '_')
+                etf_results_for_weight = {}
+                for etf_name, data in etf_results.items():
+                    if weight_key in data:
+                        etf_results_for_weight[etf_name] = data[weight_key]
+                if etf_results_for_weight:
+                    plot_etf_volatility_comparison(
+                        etf_results_for_weight,
+                        f"{period_name} ({weight_label})",
+                        output_comparison / f"volatility_{safe_period}_{weight_key}.png"
                     )
 
     # Individual ETF plots - for each weight type
