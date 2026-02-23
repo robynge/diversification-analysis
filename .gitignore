@@ -42,9 +42,7 @@ SPX/
 # Generated output
 output/*
 !output/ark_etf/
-!output/with_dividends/
-!output/price_only/
-!output/comparison/
+!output/sp500/
 
 # PDF files
 *.pdf

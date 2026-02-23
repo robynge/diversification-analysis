@@ -32,9 +32,10 @@ python ark_etf_diversification_analysis.py
 
 ```
 output/
-├── with_dividends/       # S&P 500 with dividends
-├── price_only/           # S&P 500 price only
-├── comparison/           # S&P 500 comparison charts
+├── sp500/
+│   ├── with_dividends/   # S&P 500 with dividends
+│   ├── price_only/       # S&P 500 price only
+│   └── comparison/       # S&P 500 comparison charts
 └── ark_etf/
     ├── comparison/       # Cross-ETF comparison
     ├── ARKK/
