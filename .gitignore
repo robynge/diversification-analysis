@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+~$*
+*.tmp
+
+# Claude Code files
+.claude/
+*.local.json
+PROJECT_CONTEXT.md
+CLAUDE_NOTES.md
+*CLAUDE*.md
+GITHUB_COMMIT_RULES.md
+IMPLEMENTATION_SUMMARY.md
+
+# Data files (too large for git)
+data/
+wrds/
+ark_etf/
+SPX/
+
+# Generated figures (too large for git, can be regenerated)
+figures/
+
+# PDF files
+*.pdf
