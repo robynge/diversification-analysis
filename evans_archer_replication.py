@@ -1067,7 +1067,7 @@ def main():
     print("\n>>> With Dividends Figure 1:")
     plot_figure1_single(
         results_with_div, params_with_div,
-        title="FIGURE 1 - With Dividends (Total Return)",
+        title="S&P 500 (1958-1967) - With Dividends (Total Return)",
         output_path=output_dir_with_div / "figure1_with_dividends",
         color_main=PALETTE["blue_main"],
         color_secondary=PALETTE["blue_secondary"]
@@ -1077,7 +1077,7 @@ def main():
     print("\n>>> Price Only Figure 1:")
     plot_figure1_single(
         results_price_only, params_price_only,
-        title="FIGURE 1 - Price Only (No Dividends)",
+        title="S&P 500 (1958-1967) - Price Only (No Dividends)",
         output_path=output_dir_price_only / "figure1_price_only",
         color_main=PALETTE["green_main"],
         color_secondary=PALETTE["green_secondary"]
@@ -1101,7 +1101,7 @@ def main():
     print("\n>>> Return Plots:")
     plot_return_by_portfolio_size(
         results_with_div, params_with_div,
-        title="Mean Return by Portfolio Size - With Dividends",
+        title="S&P 500 (1958-1967) - Mean Return - With Dividends",
         output_path=output_dir_with_div / "returns_with_dividends",
         color_main=PALETTE["blue_main"],
         color_secondary=PALETTE["blue_secondary"]
@@ -1109,7 +1109,7 @@ def main():
 
     plot_return_by_portfolio_size(
         results_price_only, params_price_only,
-        title="Mean Return by Portfolio Size - Price Only",
+        title="S&P 500 (1958-1967) - Mean Return - Price Only",
         output_path=output_dir_price_only / "returns_price_only",
         color_main=PALETTE["green_main"],
         color_secondary=PALETTE["green_secondary"]
@@ -1125,7 +1125,7 @@ def main():
     print("\n>>> Volatility Plots:")
     plot_volatility_distribution(
         results_with_div, params_with_div,
-        title="Volatility Distribution - With Dividends",
+        title="S&P 500 (1958-1967) - Volatility - With Dividends",
         output_path=output_dir_with_div / "volatility_with_dividends",
         color_main=PALETTE["blue_main"],
         color_secondary=PALETTE["blue_secondary"]
@@ -1133,7 +1133,7 @@ def main():
 
     plot_volatility_distribution(
         results_price_only, params_price_only,
-        title="Volatility Distribution - Price Only",
+        title="S&P 500 (1958-1967) - Volatility - Price Only",
         output_path=output_dir_price_only / "volatility_price_only",
         color_main=PALETTE["green_main"],
         color_secondary=PALETTE["green_secondary"]
